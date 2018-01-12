@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Copyright (C) 2018 Pavel Makhv <streetturtle@gmail.com>
+
+CITY='Montreal,ca'
+
+# get you apikey at http://openweathermap.org/appid
+API_KEY='<your api key>'
+
+# empty - kelvin
+# metric - celsius
+# imperial - fahrenheit
+UNITS='metric' 
+
+API_ENDPOINT='http://api.openweathermap.org/data/2.5/weather'
+
+QUERY="curl -s ${API_ENDPOINT}?q=${CITY}&appid=${API_KEY}&units=${UNITS}"
+
+WEATHER=$(curl -s ${QUERY})
+
+TEMP=$(echo $WEATHER | jq '.main.temp')
+ICON_ID=$(echo $WEATHER | jq '.weather[0].icon')
+
+# remove quotes: "50d" -> 50d
+ICON_ID="${ICON_ID%\"}"
+ICON_ID="${ICON_ID#\"}"
+
+case "$ICON_ID" in
+	#clear sky
+    01d) ICON='' ;; 
+    01n) ICON='' ;;  	
+    #few clouds
+    02d) ICON='' ;; 
+    02n) ICON='' ;;  	
+    #scattered clouds
+    03d) ICON='' ;; 
+    03n) ICON='' ;;  	
+	#broken clouds
+    04d) ICON='' ;; 
+    04n) ICON='' ;;  	
+    #shower rain
+    09d) ICON='' ;; 
+    09n) ICON='' ;;  	
+    #rain
+    10d) ICON='' ;; 
+    10n) ICON='' ;;  	
+    #thunderstorm
+    11d) ICON='' ;; 
+    11n) ICON='' ;;  	
+    #snow
+    13d) ICON='' ;; 
+    13n) ICON='' ;;  	
+    #mist
+    50d) ICON='' ;; 
+    50n) ICON='' ;;  	
+	*) ICON='' ;;
+esac
+
+printf "$ICON %0.f" $TEMP

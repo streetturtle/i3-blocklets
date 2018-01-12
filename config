@@ -1,0 +1,60 @@
+# i3blocks config file
+#
+# Please see man i3blocks for a complete reference!
+# The man page is also hosted at http://vivien.github.io/i3blocks
+#
+# List of valid properties:
+#
+# align
+# color
+# background
+# border
+# command
+# full_text
+# instance
+# interval
+# label
+# min_width
+# name
+# separator
+# separator_block_width
+# short_text
+# signal
+# urgent
+
+# Global properties
+#
+# The top properties below are applied to every block, but can be overridden.
+# Each block command defaults to the script name to avoid boilerplate.
+command=$HOME/.config/i3blocks/$BLOCK_NAME/$BLOCK_NAME
+separator_block_width=15
+markup=none
+
+full_text=
+align=center
+color=#666666
+separator=false
+separator_block_width=7
+
+[spotify]
+interval=1
+color=#74AEAB
+
+[separator]
+
+[weather]
+interval=600
+color=#74AEAB
+
+[volume]
+label=VOL
+#label=♪
+instance=Master
+# instance=PCM
+interval=1
+signal=10
+
+[time]
+command=date '+%H:%M %d/%m/%Y'
+interval=5
+color=#74AEAB
