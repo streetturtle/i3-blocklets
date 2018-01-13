@@ -28,7 +28,7 @@
 # Each block command defaults to the script name to avoid boilerplate.
 command=$HOME/.config/i3blocks/$BLOCK_NAME/$BLOCK_NAME
 separator_block_width=15
-markup=none
+markup=nonelan
 
 full_text=
 align=center
@@ -45,6 +45,12 @@ color=#74AEAB
 [weather]
 interval=600
 color=#74AEAB
+
+[separator]
+
+[battery]
+markup=pango
+interval=5
 
 [volume]
 label=VOL
