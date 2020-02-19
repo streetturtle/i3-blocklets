@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2018 Pavel Makhv <streetturtle@gmail.com>
+# Copyright (C) 2020 Pavel Makhov <streetturtle@gmail.com>
 
 
 case $BLOCK_BUTTON in
@@ -10,8 +10,8 @@ case $BLOCK_BUTTON in
 esac
 
 if sp status | grep 'Paused' > /dev/null; then
-	printf '\xef\x81\x8c ' # fa-pause
+	st='' # fa-pause
 else
-	printf '\xef\x81\x8b ' # fa-play &#xf04b
+	st='' # fa-play
 fi
-sp current-oneline
+sp current-oneline | sed "s/ [|] / $st /g"
