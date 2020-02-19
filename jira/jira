@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Copyright (C) 2020 Pavel Makhov <streetturtle@gmail.com>
+
+CACHE_DIR=$HOME/.cache/i3blocks/jira/
+
+say_hello () {
+    message=$(cat $CACHE_DIR/jira  | jq -r '.issues | .[] | ("<b>" + .key + "</b> " + .fields.summary )')
+
+    notify-send "Assigned JIRA Issues" "$message" -i $HOME/.config/i3blocks/jira/jira-mark-gradient-blue.svg
+}
+
+case $BLOCK_BUTTON in
+    1) say_hello ;;
+esac
+
+mkdir -p $CACHE_DIR
+message=$(curl -s -X GET -n "$host/rest/api/2/search?jql=assignee=currentuser()+AND+resolution=Unresolved&fields=id,assignee,summary,status")
+echo $message > $CACHE_DIR/jira
+
+cat $CACHE_DIR/jira | jq '.total'
