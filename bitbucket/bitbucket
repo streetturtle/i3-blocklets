@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Copyright (C) 2020 Pavel Makhov <streetturtle@gmail.com>
+
+CACHE_DIR=$HOME/.cache/i3blocks/bitbucket/
+
+say_hello () {
+    message=$(cat $CACHE_DIR/bitbucket  | jq -r '.values | .[].title' | sed 's/^/<i>/' | sed 's/ /<\\i> /')
+
+    notify-send "Assigned Reviews" "$message" -i $HOME/.config/i3blocks/bitbucket/bitbucket-icon-gradient-blue.svg
+}
+
+case $BLOCK_BUTTON in
+    1) say_hello ;;
+esac
+
+mkdir -p $CACHE_DIR
+message=$(curl -s -n "$host/2.0/repositories/$workspace/$repo_slug/pullrequests?fields=values.title,values.links.html,values.author.display_name,values.author.account_id,values.author.links.avatar,values.state&q=reviewers.account_id+%3D+%22$account_id%22+AND+state+%3D+%22OPEN%22")
+echo $message > $CACHE_DIR/bitbucket
+
+cat $CACHE_DIR/bitbucket | jq '.values | length'
