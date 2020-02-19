@@ -1,0 +1,20 @@
+command=$HOME/.config/i3blocks/$BLOCK_NAME/$BLOCK_NAME
+separator_block_width=15
+markup=nonelan
+
+[jira]
+label=<span foreground="#0052CC"></span>
+markup=pango
+color=#8FBCBB
+interval=10
+host=
+
+[bitbucket]
+label=<span foreground="#0052CC"></span>
+markup=pango
+color=#8FBCBB
+interval=10
+host=
+account_id=
+workspace=
+repo_slug=
