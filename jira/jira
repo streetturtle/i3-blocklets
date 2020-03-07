@@ -4,18 +4,23 @@
 
 CACHE_DIR=$HOME/.cache/i3blocks/jira/
 
-say_hello () {
-    message=$(cat $CACHE_DIR/jira  | jq -r '.issues | .[] | ("<b>" + .key + "</b> " + .fields.summary )')
+show_list () {
 
-    notify-send "Assigned JIRA Issues" "$message" -i $HOME/.config/i3blocks/jira/jira-mark-gradient-blue.svg
+    local items_str=$(cat $CACHE_DIR/jira | jq -r -j '.issues[] | .key + ";" + .fields.summary + ";"')
+    IFS=';' read -ra items_arr <<< "$items_str"
+    local column_names=(--column=Ticket --column=Summary)
+    
+    local selected_ticket=$(zenity --list "${items_arr[@]}" "${column_names[@]}" --print-column=1 --width=600 --height=400 --text='Assigned tickets:')
+    xdg-open "$host/browse/$selected_ticket" > /dev/null
 }
 
 case $BLOCK_BUTTON in
-    1) say_hello ;;
+    1) show_list ;;
 esac
 
-mkdir -p $CACHE_DIR
-message=$(curl -s -X GET -n "$host/rest/api/2/search?jql=assignee=currentuser()+AND+resolution=Unresolved&fields=id,assignee,summary,status")
-echo $message > $CACHE_DIR/jira
+
+# mkdir -p $CACHE_DIR
+# jira_tickets_json=$(curl -s -n "$host/rest/api/2/search?jql=assignee=currentuser()+AND+resolution=Unresolved&fields=id,assignee,summary,status")
+# echo $jira_tickets_json > $CACHE_DIR/jira
 
 cat $CACHE_DIR/jira | jq '.total'
