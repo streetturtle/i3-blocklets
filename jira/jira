@@ -19,8 +19,8 @@ case $BLOCK_BUTTON in
 esac
 
 
-# mkdir -p $CACHE_DIR
-# jira_tickets_json=$(curl -s -n "$host/rest/api/2/search?jql=assignee=currentuser()+AND+resolution=Unresolved&fields=id,assignee,summary,status")
-# echo $jira_tickets_json > $CACHE_DIR/jira
+mkdir -p $CACHE_DIR
+jira_tickets_json=$(curl -s -n "$host/rest/api/2/search?jql=assignee=currentuser()+AND+resolution=Unresolved&fields=id,assignee,summary,status")
+echo $jira_tickets_json > $CACHE_DIR/jira
 
 cat $CACHE_DIR/jira | jq '.total'
